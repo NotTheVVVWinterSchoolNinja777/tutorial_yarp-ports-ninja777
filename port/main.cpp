@@ -21,22 +21,35 @@ int main(int argc, const char **argv) {
         return -1;
     }
 
+    // open the outut port "/relay/in"
+    Port inPort;
+    if (!inPort.open("/relay/in")) {
+        yError() << "cannot open the input port";
+        return -1;
+    }
+
     int counter = 0;
     while (true) {
         counter++;
 
+        Bottle input;
+        if(!inPort.read(input)) {
+            yError()<<"erro while reading";
+            return 0;
+        }
+
         // prepare the output data
         Bottle output;
-        //output.addInt(counter);
-        // output.addString(...)
-        // ...
+        output = input;
+        output.addString("Hello yarp!");
+        output.addInt(counter);
 
         // write the output data
         yInfo()<< "writing data ...";
-        //...
+        outPort.write(output);
 
         // wait for a second
-        Time::delay(1.0);
+        //Time::delay(1.0);
     }
     return 0;
 }
