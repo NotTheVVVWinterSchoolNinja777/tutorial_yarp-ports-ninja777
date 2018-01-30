@@ -7,15 +7,19 @@ project(tutorial_yarp-bufferedport)
 # mandatory use of these packages
 find_package(YARP REQUIRED)
 
+find_package(ICUBcontrib REQUIRED)
+
 # extend the current search path used by cmake to load helpers
-# list(APPEND CMAKE_MODULE_PATH ${YARP_MODULE_PATH})
-# helpers defining certain macros (e.g. "yarp_install")
-# include(YarpInstallationHelpers)
+list(APPEND CMAKE_MODULE_PATH ${ICUBCONTRIB_MODULE_PATH})
+
+include(ICUBcontribHelpers)
+# specify to install in $ICUBcontrib_DIR/bin
+icubcontrib_set_default_prefix()
 
 include_directories(${YARP_INCLUDE_DIRS})
 add_executable(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${YARP_LIBRARIES})
 
-#install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-#file(GLOB scripts ${CMAKE_SOURCE_DIR}/app/scripts/*.xml)
-#yarp_install(FILES ${scripts} DESTINATION bin)
+install(TARGETS tutorial_yarp-bufferedport DESTINATION bin)
+
+icubcontrib_add_uninstall_target()
