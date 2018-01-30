@@ -19,7 +19,7 @@ int main(int argc, const char **argv) {
         return -1;
     }
 
-    // open the outut port
+    // open the output port
     BufferedPort<Bottle> outPort;
     if (!outPort.open("/relay/out")) {
         yError() << "cannot open the output port";
@@ -39,7 +39,7 @@ int main(int argc, const char **argv) {
 
         Bottle& output = outPort.prepare();
         output = *input;
-        output.addString("hello yarp");
+        output.addString("hello from relay");
         output.addInt(counter);
         // write the output data
         yInfo()<< "writing data ...";
