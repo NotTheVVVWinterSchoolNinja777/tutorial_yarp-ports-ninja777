@@ -3,6 +3,7 @@
 #include <yarp/os/Port.h>
 #include <yarp/os/Bottle.h>
 #include <yarp/os/Time.h>
+#include <iostream>
 
 //#include <yarp/os/all.h>
 
@@ -21,20 +22,27 @@ int main(int argc, const char **argv) {
         return -1;
     }
 
+    Port inPort;
+    if (!inPort.open("/relay/in")) {
+        yError() << "cannot open the output port";
+        return -1;
+    }
+
     int counter = 0;
     while (true) {
         counter++;
 
+        Bottle input;
+        inPort.read(input);
+
         // prepare the output data
         Bottle output;
-        //output.addInt(counter);
-        // output.addString(...)
-        // ...
+        output.addString(" Relay: " + input.toString());
 
         // write the output data
         yInfo()<< "writing data ...";
         //...
-
+        outPort.write(output);
         // wait for a second
         Time::delay(1.0);
     }
